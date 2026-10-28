@@ -23,7 +23,8 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            /* 字体统一设定：英文优先使用 Arial，中文优先使用 Microsoft YaHei (微软雅黑) */
+            font-family: Arial, "Microsoft YaHei", "微软雅黑", sans-serif;
         }
 
         body {
@@ -34,7 +35,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
@@ -134,11 +135,11 @@
 
         .paste-box {
             width: 100%;
-            height: 160px;
+            height: 180px;
             padding: 12px;
             border: 2px dashed #cbd5e1;
             border-radius: 8px;
-            font-family: monospace;
+            font-family: Arial, "Microsoft YaHei", "微软雅黑", sans-serif;
             font-size: 0.9rem;
             outline: none;
             background: #fafafa;
@@ -189,6 +190,7 @@
             border-radius: 6px;
             font-size: 0.9rem;
             outline: none;
+            font-family: Arial, "Microsoft YaHei", "微软雅黑", sans-serif;
             transition: border-color 0.2s;
         }
 
@@ -246,7 +248,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             text-align: left;
         }
 
@@ -301,8 +303,18 @@
             background: #f1f5f9;
             padding: 8px;
             border-radius: 4px;
-            font-family: monospace;
+            font-family: Arial, "Microsoft YaHei", "微软雅黑", sans-serif;
             font-size: 0.85rem;
+            white-space: pre-wrap;
+        }
+
+        .note-block {
+            background: #fffbebf5;
+            border-left: 3px solid var(--warning);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            color: #78350f;
             white-space: pre-wrap;
         }
     </style>
@@ -313,7 +325,7 @@
     <header>
         <div>
             <h1>CFA Level 1 在线智能错题数据库</h1>
-            <div class="subtitle">支持 Plaintext 纯文本一键解析、云端静态部署与浏览器持久化</div>
+            <div class="subtitle">统一字体规范（英文 Arial / 中文微软雅黑） | 极速 Plaintext 解析 | 云端部署与持久化</div>
         </div>
         <div style="display: flex; gap: 8px;">
             <button class="btn btn-outline" style="color:white; border-color:white;" onclick="exportData()">导出 JSON 备份</button>
@@ -355,9 +367,9 @@
         <!-- Mode 1: Plaintext One-Click Quick Paste -->
         <div id="quick-paste-section">
             <div class="paste-hint">
-                💡 <strong>使用说明：</strong> 直接复制 AI 助手生成的 Plaintext 错题卡块粘贴在下方文本框中，点击 <strong>“解析并存入错题库”</strong> 即可自动提取 ID、科目、考点、错因与逻辑卡片！
+                💡 <strong>使用说明：</strong> 直接复制 AI 助手生成的 Plaintext 错题卡块粘贴在下方文本框中，点击 <strong>“解析并存入错题库”</strong> 即可自动提取 ID、科目、考点、错因、Note 个人笔记与逻辑卡片！
             </div>
-            <textarea id="raw-paste-input" class="paste-box" placeholder="📌【CFA 错题卡】&#10;• ID: ECO-004&#10;• 科目: Economics&#10;• 考点: 交叉价格弹性与替代品/互补品判定&#10;• 错因: 审题陷阱&#10;• 错因剖析: 混淆了交叉弹性正负号对应的是替代品还是互补品&#10;• 核心逻辑: Exy > 0 为替代品 (Substitutes)；Exy < 0 为互补品 (Complements)。"></textarea>
+            <textarea id="raw-paste-input" class="paste-box" placeholder="📌【CFA 错题卡】&#10;• ID: ECO-004&#10;• 科目: Economics&#10;• 考点: 交叉价格弹性与替代品/互补品判定&#10;• 错因: 审题陷阱&#10;• Note: 考前需要再把 Exy 正负号对应图表看一遍！&#10;• 错因剖析: 混淆了交叉弹性正负号对应的是替代品还是互补品&#10;• 核心逻辑: Exy > 0 为替代品 (Substitutes)；Exy < 0 为互补品 (Complements)。"></textarea>
             <button class="btn" onclick="parseAndSaveQuickText()">🚀 一键解析并存入数据库</button>
         </div>
 
@@ -413,6 +425,10 @@
                         </select>
                     </div>
                     <div class="form-group full-width">
+                        <label>Note / 个人随手笔记 (备忘)</label>
+                        <input type="text" id="q-note" placeholder="例: 考前需要再重点看看这道题的公式变式！">
+                    </div>
+                    <div class="form-group full-width">
                         <label>错误原因剖析 (错因诊断)</label>
                         <textarea id="q-analysis" placeholder="记录当时为什么做错..."></textarea>
                     </div>
@@ -453,20 +469,21 @@
                 <option value="Mastered">Mastered (完全掌握)</option>
             </select>
 
-            <input type="text" id="filter-search" placeholder="搜索考点/错因关键词..." oninput="renderTable()">
+            <input type="text" id="filter-search" placeholder="搜索考点/错因/Note关键词..." oninput="renderTable()">
         </div>
 
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>科目 / 考点</th>
-                        <th>错误归因</th>
-                        <th>错因诊断</th>
-                        <th>解题逻辑 / 考点总结</th>
-                        <th>状态</th>
-                        <th>操作</th>
+                        <th style="width: 8%;">ID</th>
+                        <th style="width: 17%;">科目 / 考点</th>
+                        <th style="width: 10%;">错误归因</th>
+                        <th style="width: 15%;">Note 备忘笔记</th>
+                        <th style="width: 20%;">错因诊断</th>
+                        <th style="width: 20%;">解题逻辑 / 考点总结</th>
+                        <th style="width: 5%;">状态</th>
+                        <th style="width: 5%;">操作</th>
                     </tr>
                 </thead>
                 <tbody id="questions-tbody">
@@ -478,7 +495,7 @@
 </div>
 
 <script>
-    // Initial Seed Data with All 7 CFA Level 1 Questions
+    // Initial Seed Data with All 7 CFA Level 1 Questions (Enhanced with Note field)
     const initialData = [
         {
             "id": "FRA-001",
@@ -487,6 +504,7 @@
             "errorType": "概念混淆",
             "source": "官网 Topic Test Q12",
             "status": "Needs Review",
+            "note": "注意 IFRS 的 6 项资本化条件，在第二轮复盘时闭卷默写一遍！",
             "analysis": "混淆了 IFRS 下开发阶段资本化的 6 项条件，误以为与 US GAAP 一样全部费用化。",
             "logic": "US GAAP：研发支出全部费用化（软件除外）。\nIFRS：研究阶段费用化；开发阶段符合 6 项条件必须资本化。",
             "createdDate": "2026-08-28"
@@ -498,6 +516,7 @@
             "errorType": "审题陷阱",
             "source": "Mock 1 Afternoon Q18",
             "status": "Needs Review",
+            "note": "审题一定要先画圈标记 Callable / Putable 关键字！",
             "analysis": "忽略了题目中 Callable Bond 的条件，错误使用了 ModDur 计算公式。",
             "logic": "含权债券（Callable/Putable）现金流不确定，不能用 Macaulay/Modified Duration，必须使用 Effective Duration。",
             "createdDate": "2026-08-29"
@@ -509,6 +528,7 @@
             "errorType": "计算器失误",
             "source": "原版书 EOC Q5",
             "status": "Mastered",
+            "note": "按计算器时养成习惯先在草稿纸写下 (1-t) 乘以 Rd！",
             "analysis": "在计算 WACC 时忘记将 Rd 乘以 (1 - t)，直接使用了税前债务成本。",
             "logic": "WACC = (Wd * Rd * (1-t)) + (Wps * Rps) + (We * Re)。利息具有抵税效应，必须用税后债务成本！",
             "createdDate": "2026-08-25"
@@ -520,6 +540,7 @@
             "errorType": "公式/法则记错",
             "source": "原版书 EOC Q22",
             "status": "Needs Review",
+            "note": "把“p 值小，拒绝原假设”贴在桌前加深记忆。",
             "analysis": "误将 p-value 小于 alpha 记为接受原假设。",
             "logic": "口诀：p 值小，拒绝原假设 (p <= alpha -> Reject H0)。",
             "createdDate": "2026-08-30"
@@ -531,6 +552,7 @@
             "errorType": "概念推导",
             "source": "原版书 EOC Q15",
             "status": "Needs Review",
+            "note": "对比劣等品与吉芬商品的区别，画矩阵对比图。",
             "analysis": "混淆了替代效应与收入效应的方向及相对大小。",
             "logic": "吉芬商品为强劣等品 (YED < 0)，收入效应（拉动需求增加）> 替代效应（拉动需求减少），导致价格上涨需求反而增加。",
             "createdDate": "2026-08-31"
@@ -542,6 +564,7 @@
             "errorType": "概念辨析",
             "source": "官网 Topic Test Q8",
             "status": "Needs Review",
+            "note": "抓住关键字：“自身价格”才会导致沿线移动！",
             "analysis": "误认为收入改变会导致沿着需求曲线移动。",
             "logic": "沿线移动 (Movement)：仅由商品自身价格改变导致 (ΔQd)；整体平移 (Shift)：由收入、替代品/互补品价格等非价格因素改变导致 (ΔD)。",
             "createdDate": "2026-09-01"
@@ -553,6 +576,7 @@
             "errorType": "概念辨析",
             "source": "原版书 EOC Q18",
             "status": "Needs Review",
+            "note": "重点考点：单位弹性时 MR = 0，TR 达到峰值。",
             "analysis": "未掌握需求价格弹性系数等于 -1 时（|Ed| = 1），价格变动对总收益 (TR) 的联动影响。",
             "logic": "1. |Ed| = 1 为单位弹性 (Unitary Elastic)，价格变动时总收益 TR 保持不变 (达到最大值，MR = 0)。\n2. |Ed| > 1 (富有弹性)：降价增加总收益。\n3. |Ed| < 1 (缺乏弹性)：提价增加总收益。",
             "createdDate": "2026-09-02"
@@ -560,7 +584,7 @@
     ];
 
     // Storage Key Versioning
-    const STORAGE_KEY = 'cfa_wrong_questions_v2';
+    const STORAGE_KEY = 'cfa_wrong_questions_v3';
 
     // Load from LocalStorage or seed
     let questions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || initialData;
@@ -609,6 +633,7 @@
         const topic = getField(/•\s*(?:考点|知识点)[:：]\s*(.+)/i) || '综合考点复盘';
         const errorType = getField(/•\s*(?:错因类型|归因|错因)[:：]\s*(.+)/i) || '概念辨析';
         const source = getField(/•\s*(?:来源|出处)[:：]\s*(.+)/i) || '日常练习';
+        const note = getField(/•\s*(?:Note|笔记|个人笔记)[:：]\s*(.+)/i) || '暂无备忘笔记';
         const analysis = getField(/•\s*(?:错因剖析|诊断|错因分析)[:：]\s*(.+)/i) || '尚无明确错因记录';
         const logic = getField(/•\s*(?:核心逻辑|考点总结|逻辑解题)[:：]\s*(.+)/i) || rawText;
 
@@ -619,6 +644,7 @@
             errorType: errorType,
             source: source,
             status: 'Needs Review',
+            note: note,
             analysis: analysis,
             logic: logic,
             createdDate: new Date().toISOString().split('T')[0]
@@ -659,6 +685,7 @@
                 q.topic.toLowerCase().includes(searchFilter) || 
                 q.analysis.toLowerCase().includes(searchFilter) ||
                 q.logic.toLowerCase().includes(searchFilter) ||
+                (q.note && q.note.toLowerCase().includes(searchFilter)) ||
                 q.id.toLowerCase().includes(searchFilter);
 
             return matchSubj && matchStatus && matchSearch;
@@ -680,6 +707,7 @@
                     ${q.source ? `<div style="font-size: 0.75rem; color: #94a3b8; margin-top: 2px;">来源: ${q.source}</div>` : ''}
                 </td>
                 <td><span class="badge badge-error">${q.errorType}</span></td>
+                <td>${q.note ? `<div class="note-note">${q.note}</div>` : '<span style="color:#cbd5e1; font-size:0.8rem;">无笔记</span>'}</td>
                 <td>${q.analysis}</td>
                 <td><div class="code-block">${q.logic}</div></td>
                 <td>${statusBadge}</td>
@@ -703,6 +731,7 @@
             errorType: document.getElementById('q-error-type').value,
             source: document.getElementById('q-source').value,
             status: document.getElementById('q-status').value,
+            note: document.getElementById('q-note').value || '暂无备忘笔记',
             analysis: document.getElementById('q-analysis').value,
             logic: document.getElementById('q-logic').value,
             createdDate: new Date().toISOString().split('T')[0]
@@ -752,3 +781,9 @@
 
 </body>
 </html>
+```
+
+### 💡 更新部署步骤：
+1. 点击文件右上角的**下载**按钮保存 `index.html`（或直接复制源码内容）。
+2. 打开 GitHub 仓库 [devenzhao-lab/CFA-Level-One](https://github.com/devenzhao-lab/CFA-Level-One)，点击 `index.html` 进行编辑，将最新代码全选覆盖。
+3. 点击 **Commit changes** 提交修改。稍等 30 秒后在浏览器打开您的部署链接 `https://devenzhao-lab.github.io/CFA-Level-One/index.html` 即可看到微软雅黑/Arial 统一字体及包含 **Note 备忘列** 的最新错题数据库。
