@@ -484,7 +484,7 @@
             <div class="paste-hint">
                 💡 <strong>使用说明：</strong> 直接复制 Plaintext 文本块粘贴在下方，点击 <strong>“解析并存入错题库”</strong> 即可自动提取信息！
             </div>
-            <textarea id="raw-paste-input" class="paste-box" placeholder="📌【CFA 错题卡】&#10;• ID: ECO-006&#10;• 科目: Economics&#10;• 考点: 完全竞争下厂商需求曲线与市场需求曲线对比&#10;• 错因: 概念辨析&#10;• 来源: 原版书 EOC&#10;• 错因剖析: 混淆了整个市场的需求曲线（向下倾斜）与完全竞争下单个厂商面对的需求曲线（水平线）。&#10;• 核心逻辑: 1. 市场需求曲线反映总供求，向下倾斜；2. 单个厂商为 Price Takers，需求曲线为水平线(P* = AR = MR = D, Elasticity = ∞)。&#10;• Note: 比较矩阵: 市场向下倾斜/厂商水平线 Ed=∞"></textarea>
+            <textarea id="raw-paste-input" class="paste-box" placeholder="📌【CFA 错题卡】&#10;• ID: FRA-011&#10;• 科目: Financial Reporting & Analysis&#10;• 考点: 利润表与 OCI 项目判定 (Items Classified as Other Comprehensive Income)&#10;• 错因: 概念辨析 / 归类错误&#10;• 来源: 原版书 EOC&#10;• 错因剖析: 混淆了交易性金融资产 (FVTPL) 的未实现损益（进 Net Income）与外币报表折算差额（进 OCI）。&#10;• 核心逻辑: Question: When preparing an income statement, which item is classified as OCI? A. Foreign currency translation adjustment B. Unrealized gain on trading security C. Realized gain on non-hedge derivative. Correct: A. Translation adjustments go to OCI. Trading gains and non-hedge derivative gains go directly to Net Income.&#10;• 概念表述(OCI 包含项目): OCI 包含四大基本项目(PUFI): 1.外币报表折算差额(CTA); 2.现金流套期有效部分; 3.FVOCI/AFS 债务证券未实现损益; 4.养老金未确认精算损益/过去服务成本; (注: IFRS 下重估溢余 Revaluation Surplus 亦进 OCI)。&#10;• Note: 外币折算进 OCI；Trading 证券未实现损益与非套期衍生品损益均进 Net Income"></textarea>
             <button class="btn" onclick="parseAndSaveQuickText()">🚀 一键解析并存入数据库</button>
         </div>
 
@@ -494,7 +494,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>题目 ID</label>
-                        <input type="text" id="q-id" placeholder="例: ECO-006">
+                        <input type="text" id="q-id" placeholder="例: FRA-011">
                     </div>
                     <div class="form-group">
                         <label>CFA 科目</label>
@@ -513,7 +513,7 @@
                     </div>
                     <div class="form-group">
                         <label>核心考点/知识点</label>
-                        <input type="text" id="q-topic" placeholder="例: 完全竞争下厂商需求曲线">
+                        <input type="text" id="q-topic" placeholder="例: OCI 项目判定">
                     </div>
                     <div class="form-group">
                         <label>错误类型</label>
@@ -528,7 +528,7 @@
                     </div>
                     <div class="form-group">
                         <label>题目来源</label>
-                        <input type="text" id="q-source" placeholder="例: 原版书 EOC Q11">
+                        <input type="text" id="q-source" placeholder="例: 原版书 EOC">
                     </div>
                     <div class="form-group">
                         <label>掌握状态</label>
@@ -610,6 +610,66 @@
 
 <script>
     const initialData = [
+        {
+            "id": "FRA-011",
+            "subject": "Financial Reporting & Analysis",
+            "topic": "利润表与 OCI 项目判定 (Items Classified as Other Comprehensive Income)",
+            "errorType": "概念辨析",
+            "source": "原版书 EOC",
+            "status": "Needs Review",
+            "analysis": "混淆了交易性金融资产 (FVTPL) 的未实现损益（进 Net Income）与外币报表折算差额（进 OCI）。",
+            "logic": "Question: When preparing an income statement, which of the following items would most likely be classified as OCI?\nA. Foreign currency translation adjustment  B. Unrealized gain on trading security  C. Realized gain on non-hedge derivative.\nCorrect: A.\n\n📘 考点概念表述 (Comprehensive OCI Items):\nOCI 包含四大核心项目 (PUFI):\n1. 外币报表折算差额 (Foreign currency translation adjustments);\n2. 现金流套期有效部分 (Effective portion of cash flow hedges);\n3. FVOCI / AFS 债务证券未实现持有利得与损失;\n4. 养老金未确认精算损益/过去服务成本 (Defined benefit plan adjustments);\n*(注: IFRS 独有 PP&E 重估溢余 Revaluation Surplus 亦计入 OCI)。\n而 Trading 证券与非套期衍生品的损益均直接进入 Net Income！",
+            "note": "外币折算进 OCI；Trading 证券未实现损益与非套期衍生品损益均进 Net Income",
+            "createdDate": "2026-11-04"
+        },
+        {
+            "id": "FRA-010",
+            "subject": "Financial Reporting & Analysis",
+            "topic": "利润表费用按功能分类实例 (Expense Classification by Function Example)",
+            "errorType": "概念辨析",
+            "source": "原版书 EOC",
+            "status": "Needs Review",
+            "analysis": "需精准辨识销货成本 (COGS) 属于典型的按“业务功能 (Function)”分类，而利息费用和所得税费用属于非经营/融资与税务独立列项。",
+            "logic": "Question: An example of an expense classification by function is:\nA. tax expense.  B. interest expense.  C. cost of goods sold.\nCorrect: C.\n\n📘 考点概念表述 (Functional vs Nature Expense):\n1. Function (按功能): 按业务环节/部门归集，如 COGS (生产环节)、Selling Expense (销售环节)、G&A (管理环节)、R&D (研发环节)；\n2. Nature (按性质): 按经济性质归集，如 折旧费(Depreciation)、员工工资(Salaries)、原材料消耗(Raw Materials)；\n3. Tax Expense 与 Interest Expense 属于独立于经营功能之外的融资及法定税负单列项目。",
+            "note": "COGS、SG&A 是典型的 Function 分类；利息和所得税为非经营列项",
+            "createdDate": "2026-11-04"
+        },
+        {
+            "id": "FRA-009",
+            "subject": "Financial Reporting & Analysis",
+            "topic": "利润表费用的分类方式 (Grouping Expenses by Nature vs. Function)",
+            "errorType": "审题陷阱",
+            "source": "原版书 EOC",
+            "status": "Needs Review",
+            "analysis": "需精准掌握利润表费用既可以按“性质 (Nature)”分类，也可以按“功能 (Function)”分类，切勿误以为只能二选一。",
+            "logic": "Question: Expenses on the income statement may be grouped by:\nA. nature, but not by function.  B. function, but not by nature.  C. either function or nature.\nCorrect: C.\n\n📘 考点概念表述 (Expense Classification Rules):\n1. IFRS 与 US GAAP 均允许费用按 Nature 或 Function 呈现；\n2. Nature: 无需在部门间分拆分配 (如薪酬、折旧)；\n3. Function: 按销货成本法归集 (如 COGS、销售及管理费用)；\n4. IFRS 特别要求: 若公司在利润表中选择 Function 分类，必须在附注中披露 Nature 额外信息。",
+            "note": "费用分类可选 Nature 或 Function；若选 Function，IFRS 强制附注披露 Nature 信息",
+            "createdDate": "2026-11-03"
+        },
+        {
+            "id": "FRA-004",
+            "subject": "Financial Reporting & Analysis",
+            "topic": "财务报表的核心目标 (Objective of Financial Statements)",
+            "errorType": "审题陷阱",
+            "source": "原版书 EOC",
+            "status": "Needs Review",
+            "analysis": "混淆了“向使用者提供关于企业的信息”与“提供关于使用者自身的信息”。",
+            "logic": "Question: Which of the following is most likely not an objective of financial statements?\nA. Performance  B. Financial position  C. Users of financial statements.\nCorrect: C. The objective is to provide info about the entity's position, performance, and cash flows, NOT info about the users.",
+            "note": "财报报告主体是企业本身(Entity)，而非使用者(Users)",
+            "createdDate": "2026-11-02"
+        },
+        {
+            "id": "FRA-002",
+            "subject": "Financial Reporting & Analysis",
+            "topic": "财务报表两大核心假设 (Accrual Accounting & Going Concern)",
+            "errorType": "概念辨析",
+            "source": "原版书 EOC / FRA 基础章节",
+            "status": "Needs Review",
+            "analysis": "需区分权责发生制（强调收入/费用归属期与现金流分离）与持续经营假设（强调资产非清算计量基础）。",
+            "logic": "1. Accrual Accounting: 交易在发生而非收付现金时确认；\n2. Going Concern: 假定企业持续经营，资产按历史成本/折旧计量，若破产改用清算基础 (Liquidation basis)。",
+            "note": "权责发生制决定归属时点，持续经营决定计量基础",
+            "createdDate": "2026-11-01"
+        },
         {
             "id": "ECO-006",
             "subject": "Economics",
@@ -705,18 +765,6 @@
             "logic": "吉芬商品为强劣等品(YED < 0)，收入效应(拉动需求增加) > 替代效应(拉动需求减少)，导致价格上涨需求反而增加。",
             "note": "劣等品 vs 吉芬商品对比图表",
             "createdDate": "2026-08-31"
-        },
-        {
-            "id": "ECO-002",
-            "subject": "Economics",
-            "topic": "需求曲线沿线移动 (Movement) vs 整体平移 (Shift)",
-            "errorType": "概念辨析",
-            "source": "官网 Topic Test Q8",
-            "status": "Needs Review",
-            "analysis": "误认为收入改变会导致沿着需求曲线移动。",
-            "logic": "沿线移动(Movement)：仅由商品自身价格改变导致(ΔQd)；整体平移(Shift)：由收入、替代品/互补品价格等非价格因素改变导致(ΔD)。",
-            "note": "区别自身价格变动与非价格因素",
-            "createdDate": "2026-09-01"
         }
     ];
 
@@ -762,7 +810,7 @@
         const errorType = getField(/•\s*(?:错因类型|归因|错因)[:：]\s*(.+)/i) || '概念辨析';
         const source = getField(/•\s*(?:来源|出处)[:：]\s*(.+)/i) || '日常练习';
         const analysis = getField(/•\s*(?:错因剖析|诊断|错因分析)[:：]\s*(.+)/i) || '尚无明确错因记录';
-        const logic = getField(/•\s*(?:核心逻辑|考点总结|逻辑解题)[:：]\s*(.+)/i) || rawText;
+        const logic = getField(/•\s*(?:核心逻辑|考点总结|逻辑解题|概念表述)[:：]\s*(.+)/i) || rawText;
         const note = getField(/•\s*(?:Note|笔记|备忘)[:：]\s*(.+)/i) || '点击可直接添加笔记...';
 
         const newQ = {
