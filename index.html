@@ -659,6 +659,18 @@
             "createdDate": "2026-11-02"
         },
         {
+            "id": "FRA-003",
+            "subject": "Financial Reporting & Analysis",
+            "topic": "摊余成本计量与实际利率法 (Amortised Cost & Effective Interest Method)",
+            "errorType": "概念辨析",
+            "source": "原版书 EOC / FRA 负债与金融资产",
+            "status": "Needs Review",
+            "analysis": "混淆了损益表利息费用 (Effective Interest = Carrying Value * YTM) 与实际付息 (Coupon = Face Value * Coupon Rate) 的计算与对账面值的影响。",
+            "logic": "📘 考点概念表述 (Amortised Cost Formula & Rules):\n1. 摊余成本公式: End Amortised Cost = Beg Carrying Value + Effective Interest - Coupon Cash Paid - Principal Repayments;\n2. 利息费用(Effective Interest) = 期初账面值 * 发行时实际利率(YTM)；\n3. 折价发债 (Discount): Effective Interest > Coupon Cash，折价摊销使账面值逐期【增加】趋向面值；\n4. 溢价发债 (Premium): Effective Interest < Coupon Cash，溢价摊销使账面值逐期【减少】趋向面值。",
+            "note": "利息费用用期初账面值*YTM，折价账面值逐期增加，溢价账面值逐期减少",
+            "createdDate": "2026-11-01"
+        },
+        {
             "id": "FRA-002",
             "subject": "Financial Reporting & Analysis",
             "topic": "财务报表两大核心假设 (Accrual Accounting & Going Concern)",
@@ -753,18 +765,6 @@
             "logic": "口诀：p 值小，拒绝原假设 (p <= alpha -> Reject H0)。",
             "note": "记忆口诀：p值小，拒绝原假设",
             "createdDate": "2026-08-30"
-        },
-        {
-            "id": "ECO-001",
-            "subject": "Economics",
-            "topic": "吉芬商品 (Giffen Good) 与效应分解",
-            "errorType": "概念推导",
-            "source": "原版书 EOC Q15",
-            "status": "Needs Review",
-            "analysis": "混淆了替代效应与收入效应的方向及相对大小。",
-            "logic": "吉芬商品为强劣等品(YED < 0)，收入效应(拉动需求增加) > 替代效应(拉动需求减少)，导致价格上涨需求反而增加。",
-            "note": "劣等品 vs 吉芬商品对比图表",
-            "createdDate": "2026-08-31"
         }
     ];
 
