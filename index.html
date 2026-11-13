@@ -342,15 +342,16 @@
             background-color: #f1f5f9;
         }
 
-        /* Editable Note Cell */
+        /* Editable Note / Concept Cell */
         .note-cell {
             background: #fffbebfb;
             border: 1px dashed #fcd34d;
             border-radius: 6px;
             padding: 8px;
             font-size: 0.85rem;
-            min-width: 140px;
+            min-width: 220px;
             outline: none;
+            white-space: pre-wrap;
             transition: background-color 0.2s;
         }
 
@@ -484,7 +485,7 @@
             <div class="paste-hint">
                 💡 <strong>使用说明：</strong> 直接复制 Plaintext 文本块粘贴在下方，点击 <strong>“解析并存入错题库”</strong> 即可自动提取信息！
             </div>
-            <textarea id="raw-paste-input" class="paste-box" placeholder="📌【CFA 错题卡】&#10;• ID: FRA-011&#10;• 科目: Financial Reporting & Analysis&#10;• 考点: 利润表与 OCI 项目判定 (Items Classified as Other Comprehensive Income)&#10;• 错因: 概念辨析 / 归类错误&#10;• 来源: 原版书 EOC&#10;• 错因剖析: 混淆了交易性金融资产 (FVTPL) 的未实现损益（进 Net Income）与外币报表折算差额（进 OCI）。&#10;• 核心逻辑: Question: When preparing an income statement, which item is classified as OCI? A. Foreign currency translation adjustment B. Unrealized gain on trading security C. Realized gain on non-hedge derivative. Correct: A. Translation adjustments go to OCI. Trading gains and non-hedge derivative gains go directly to Net Income.&#10;• 概念表述(OCI 包含项目): OCI 包含四大基本项目(PUFI): 1.外币报表折算差额(CTA); 2.现金流套期有效部分; 3.FVOCI/AFS 债务证券未实现损益; 4.养老金未确认精算损益/过去服务成本; (注: IFRS 下重估溢余 Revaluation Surplus 亦进 OCI)。&#10;• Note: 外币折算进 OCI；Trading 证券未实现损益与非套期衍生品损益均进 Net Income"></textarea>
+            <textarea id="raw-paste-input" class="paste-box" placeholder="📌【CFA 错题卡】&#10;• ID: FRA-011&#10;• 科目: Financial Reporting & Analysis&#10;• 考点: 利润表与 OCI 项目判定 (Items Classified as Other Comprehensive Income)&#10;• 错因: 概念辨析 / 归类错误&#10;• 来源: 原版书 EOC&#10;• 错因剖析: 混淆了交易性金融资产 (FVTPL) 的未实现损益（进 Net Income）与外币报表折算差额（进 OCI）。&#10;• 核心逻辑: Question: When preparing an income statement, which item is classified as OCI? A. Foreign currency translation adjustment B. Unrealized gain on trading security C. Realized gain on non-hedge derivative. Correct: A. Translation adjustments go to OCI. Trading gains and non-hedge derivative gains go directly to Net Income.&#10;• 考点概念表述(Comprehensive OCI Items): 1.外币报表折算差额(CTA); 2.现金流套期有效部分; 3.FVOCI/AFS 债务证券未实现损益; 4.养老金未确认精算损益/过去服务成本; (注: IFRS 下重估溢余 Revaluation Surplus 亦进 OCI)"></textarea>
             <button class="btn" onclick="parseAndSaveQuickText()">🚀 一键解析并存入数据库</button>
         </div>
 
@@ -543,12 +544,12 @@
                         <textarea id="q-analysis" placeholder="记录当时为什么做错..."></textarea>
                     </div>
                     <div class="form-group full-width">
-                        <label>核心逻辑与考点解题推导 (考点总结)</label>
-                        <textarea id="q-logic" placeholder="用简明的一两句话总结解题逻辑/核心公式..."></textarea>
+                        <label>题目原题与核心解题推导 (考点总结)</label>
+                        <textarea id="q-logic" placeholder="输入原题题干、选项及解题推导..."></textarea>
                     </div>
                     <div class="form-group full-width">
-                        <label>Note / 随手笔记备忘</label>
-                        <input type="text" id="q-note" placeholder="随手备注，如：第三轮复盘重点看">
+                        <label>考点概念表述 (Concept Notes)</label>
+                        <input type="text" id="q-note" placeholder="可编辑的考点概念完整表述...">
                     </div>
                 </div>
                 <button type="submit" class="btn">手动保存录入</button>
@@ -583,7 +584,7 @@
                 <option value="Mastered">Mastered (完全掌握)</option>
             </select>
 
-            <input type="text" id="filter-search" placeholder="搜索考点/错因/Note关键词..." oninput="renderTable()">
+            <input type="text" id="filter-search" placeholder="搜索考点/错因/概念表述关键词..." oninput="renderTable()">
         </div>
 
         <div class="table-container">
@@ -594,10 +595,10 @@
                         <th>科目 / 考点</th>
                         <th>错误归因</th>
                         <th>错因诊断</th>
-                        <th>解题逻辑 / 考点总结</th>
+                        <th>题目原题 / 核心解题推导</th>
                         <th>状态</th>
                         <th>操作</th>
-                        <th>Note (点击即编辑)</th>
+                        <th>考点概念表述 (点击即编辑)</th>
                     </tr>
                 </thead>
                 <tbody id="questions-tbody">
@@ -618,8 +619,8 @@
             "source": "原版书 EOC",
             "status": "Needs Review",
             "analysis": "混淆了交易性金融资产 (FVTPL) 的未实现损益（进 Net Income）与外币报表折算差额（进 OCI）。",
-            "logic": "Question: When preparing an income statement, which of the following items would most likely be classified as OCI?\nA. Foreign currency translation adjustment  B. Unrealized gain on trading security  C. Realized gain on non-hedge derivative.\nCorrect: A.\n\n📘 考点概念表述 (Comprehensive OCI Items):\nOCI 包含四大核心项目 (PUFI):\n1. 外币报表折算差额 (Foreign currency translation adjustments);\n2. 现金流套期有效部分 (Effective portion of cash flow hedges);\n3. FVOCI / AFS 债务证券未实现持有利得与损失;\n4. 养老金未确认精算损益/过去服务成本 (Defined benefit plan adjustments);\n*(注: IFRS 独有 PP&E 重估溢余 Revaluation Surplus 亦计入 OCI)。\n而 Trading 证券与非套期衍生品的损益均直接进入 Net Income！",
-            "note": "外币折算进 OCI；Trading 证券未实现损益与非套期衍生品损益均进 Net Income",
+            "logic": "Question: When preparing an income statement, which of the following items would most likely be classified as OCI?\nA. Foreign currency translation adjustment\nB. Unrealized gain on trading security\nC. Realized gain on non-hedge derivative\nCorrect: A.",
+            "note": "📘 考点概念表述 (Comprehensive OCI Items):\nOCI 包含四大核心项目 (PUFI):\n1. 外币报表折算差额 (Foreign currency translation adjustments);\n2. 现金流套期有效部分 (Effective portion of cash flow hedges);\n3. FVOCI / AFS 债务证券未实现持有利得与损失;\n4. 养老金未确认精算损益/过去服务成本 (Defined benefit plan adjustments);\n*(注: IFRS 独有 PP&E 重估溢余 Revaluation Surplus 亦计入 OCI)。\n而 Trading 证券与非套期衍生品的损益均直接进入 Net Income！",
             "createdDate": "2026-11-04"
         },
         {
@@ -630,8 +631,8 @@
             "source": "原版书 EOC",
             "status": "Needs Review",
             "analysis": "需精准辨识销货成本 (COGS) 属于典型的按“业务功能 (Function)”分类，而利息费用和所得税费用属于非经营/融资与税务独立列项。",
-            "logic": "Question: An example of an expense classification by function is:\nA. tax expense.  B. interest expense.  C. cost of goods sold.\nCorrect: C.\n\n📘 考点概念表述 (Functional vs Nature Expense):\n1. Function (按功能): 按业务环节/部门归集，如 COGS (生产环节)、Selling Expense (销售环节)、G&A (管理环节)、R&D (研发环节)；\n2. Nature (按性质): 按经济性质归集，如 折旧费(Depreciation)、员工工资(Salaries)、原材料消耗(Raw Materials)；\n3. Tax Expense 与 Interest Expense 属于独立于经营功能之外的融资及法定税负单列项目。",
-            "note": "COGS、SG&A 是典型的 Function 分类；利息和所得税为非经营列项",
+            "logic": "Question: An example of an expense classification by function is:\nA. tax expense.\nB. interest expense.\nC. cost of goods sold.\nCorrect: C.",
+            "note": "📘 考点概念表述 (Functional vs Nature Expense):\n1. Function (按功能): 按业务环节/部门归集，如 COGS (生产环节)、Selling Expense (销售环节)、G&A (管理环节)、R&D (研发环节)；\n2. Nature (按性质): 按经济性质归集，如 折旧费(Depreciation)、员工工资(Salaries)、原材料消耗(Raw Materials)；\n3. Tax Expense 与 Interest Expense 属于独立于经营功能之外的融资及法定税负单列项目。",
             "createdDate": "2026-11-04"
         },
         {
@@ -642,8 +643,8 @@
             "source": "原版书 EOC",
             "status": "Needs Review",
             "analysis": "需精准掌握利润表费用既可以按“性质 (Nature)”分类，也可以按“功能 (Function)”分类，切勿误以为只能二选一。",
-            "logic": "Question: Expenses on the income statement may be grouped by:\nA. nature, but not by function.  B. function, but not by nature.  C. either function or nature.\nCorrect: C.\n\n📘 考点概念表述 (Expense Classification Rules):\n1. IFRS 与 US GAAP 均允许费用按 Nature 或 Function 呈现；\n2. Nature: 无需在部门间分拆分配 (如薪酬、折旧)；\n3. Function: 按销货成本法归集 (如 COGS、销售及管理费用)；\n4. IFRS 特别要求: 若公司在利润表中选择 Function 分类，必须在附注中披露 Nature 额外信息。",
-            "note": "费用分类可选 Nature 或 Function；若选 Function，IFRS 强制附注披露 Nature 信息",
+            "logic": "Question: Expenses on the income statement may be grouped by:\nA. nature, but not by function.\nB. function, but not by nature.\nC. either function or nature.\nCorrect: C.",
+            "note": "📘 考点概念表述 (Expense Classification Rules):\n1. IFRS 与 US GAAP 均允许费用按 Nature 或 Function 呈现；\n2. Nature: 无需在部门间分拆分配 (如薪酬、折旧)；\n3. Function: 按销货成本法归集 (如 COGS、销售及管理费用)；\n4. IFRS 特别要求: 若公司在利润表中选择 Function 分类，必须在附注中披露 Nature 额外信息。",
             "createdDate": "2026-11-03"
         },
         {
@@ -654,8 +655,8 @@
             "source": "原版书 EOC",
             "status": "Needs Review",
             "analysis": "混淆了“向使用者提供关于企业的信息”与“提供关于使用者自身的信息”。",
-            "logic": "Question: Which of the following is most likely not an objective of financial statements?\nA. Performance  B. Financial position  C. Users of financial statements.\nCorrect: C. The objective is to provide info about the entity's position, performance, and cash flows, NOT info about the users.",
-            "note": "财报报告主体是企业本身(Entity)，而非使用者(Users)",
+            "logic": "Question: Which of the following is most likely not an objective of financial statements?\nA. Performance  B. Financial position  C. Users of financial statements.\nCorrect: C.",
+            "note": "📘 考点概念表述 (Objective of Financial Reporting):\n根据 IFRS/US GAAP 概念框架，财务报告的核心目标是向投资者、债权人等外部使用者提供关于报告主体（Reporting Entity）的【财务状况 (Position)】、【经营成果 (Performance)】及【现金流量 (Cash Flows)】信息。财报报告的主体是企业本身 (Entity)，而非使用者 (Users) 自身的信息。",
             "createdDate": "2026-11-02"
         },
         {
@@ -666,8 +667,8 @@
             "source": "原版书 EOC / FRA 负债与金融资产",
             "status": "Needs Review",
             "analysis": "混淆了损益表利息费用 (Effective Interest = Carrying Value * YTM) 与实际付息 (Coupon = Face Value * Coupon Rate) 的计算与对账面值的影响。",
-            "logic": "📘 考点概念表述 (Amortised Cost Formula & Rules):\n1. 摊余成本公式: End Amortised Cost = Beg Carrying Value + Effective Interest - Coupon Cash Paid - Principal Repayments;\n2. 利息费用(Effective Interest) = 期初账面值 * 发行时实际利率(YTM)；\n3. 折价发债 (Discount): Effective Interest > Coupon Cash，折价摊销使账面值逐期【增加】趋向面值；\n4. 溢价发债 (Premium): Effective Interest < Coupon Cash，溢价摊销使账面值逐期【减少】趋向面值。",
-            "note": "利息费用用期初账面值*YTM，折价账面值逐期增加，溢价账面值逐期减少",
+            "logic": "Calculations & Amortisation Mechanics:\n• Effective Interest = Beginning Carrying Value * YTM (at issuance)\n• Coupon Cash Paid = Face Value * Stated Coupon Rate",
+            "note": "📘 考点概念表述 (Amortised Cost Formula & Rules):\n1. 摊余成本公式: End Amortised Cost = Beg Carrying Value + Effective Interest - Coupon Cash Paid - Principal Repayments;\n2. 利息费用 (Effective Interest) 用期初账面值乘以发行时 YTM；\n3. 折价发债 (Discount): Effective Interest > Coupon Cash，折价摊销使账面值逐期【增加】趋向面值；\n4. 溢价发债 (Premium): Effective Interest < Coupon Cash，溢价摊销使账面值逐期【减少】趋向面值。",
             "createdDate": "2026-11-01"
         },
         {
@@ -678,8 +679,8 @@
             "source": "原版书 EOC / FRA 基础章节",
             "status": "Needs Review",
             "analysis": "需区分权责发生制（强调收入/费用归属期与现金流分离）与持续经营假设（强调资产非清算计量基础）。",
-            "logic": "1. Accrual Accounting: 交易在发生而非收付现金时确认；\n2. Going Concern: 假定企业持续经营，资产按历史成本/折旧计量，若破产改用清算基础 (Liquidation basis)。",
-            "note": "权责发生制决定归属时点，持续经营决定计量基础",
+            "logic": "Two Fundamental Accounting Assumptions:\n1. Accrual Accounting (权责发生制)\n2. Going Concern (持续经营假设)",
+            "note": "📘 考点概念表述 (Core Accounting Assumptions):\n1. Accrual Accounting: 交易与事项在【发生】而非收付现金时确认；匹配原则要求费用与对应收入在同一期间确认；\n2. Going Concern: 假定企业在可预见的未来持续经营（至少 12 个月），允许资产按历史成本/折旧计量；若假定突破破产，必须改用【清算基础 (Liquidation basis)】计量。",
             "createdDate": "2026-11-01"
         },
         {
@@ -690,8 +691,8 @@
             "source": "原版书 EOC / 市场结构章节",
             "status": "Needs Review",
             "analysis": "混淆了整个市场的需求曲线（向下倾斜）与完全竞争下单个厂商面对的需求曲线（完全弹性/水平线）。",
-            "logic": "1. 市场需求曲线反映总供求，遵循需求法则向下倾斜(Slope < 0)；\n2. 单个厂商为 Price Takers，面对的需求曲线为水平线(P* = AR = MR = D, Elasticity = ∞)。",
-            "note": "比较矩阵:【市场】向下倾斜/MR<P |【厂商】水平线/完全弹性 Ed=∞/MR=P",
+            "logic": "Comparison Matrix:\n• Market Demand: Downward sloping (Slope < 0)\n• Firm Demand: Horizontal Line at P* (Price Takers)",
+            "note": "📘 考点概念表述 (Firm vs Market Demand in Perfect Competition):\n1. 市场需求曲线 (Market Demand): 反映全市场供求博弈，遵循需求法则，向下倾斜 (Slope < 0)；\n2. 单个厂商需求曲线 (Firm Demand): 完全竞争下厂商为价格接受者 (Price Takers)，面对的需求曲线为水平线 (P* = AR = MR = D, 需求弹性 Ed = ∞)。",
             "createdDate": "2026-10-31"
         },
         {
@@ -702,8 +703,8 @@
             "source": "原版书 EOC Q11",
             "status": "Needs Review",
             "analysis": "注意区分交叉价格弹性正负号对应的是替代品还是互补品，以及正常品是由收入弹性判定。",
-            "logic": "Ex,y < 0 为互补品 (Complements)；Ex,y > 0 为替代品 (Substitutes)；需求收入弹性 Ey > 0 为正常品 (Normal Goods)。",
-            "note": "交叉弹性负互补、正替代",
+            "logic": "Cross-Price Elasticity & Income Elasticity Rules:\n• Ex,y < 0 -> Complements\n• Ex,y > 0 -> Substitutes\n• Ey > 0 -> Normal Goods",
+            "note": "📘 考点概念表述 (Elasticity Sign Rules):\n1. 交叉价格弹性 (Cross-Price Elasticity Ex,y): 负数 (Ex,y < 0) 为互补品 (Complements)；正数 (Ex,y > 0) 为替代品 (Substitutes)；\n2. 收入弹性 (Income Elasticity Ey): 正数 (Ey > 0) 为正常品 (Normal Goods)；负数 (Ey < 0) 为劣等品 (Inferior Goods)。",
             "createdDate": "2026-10-30"
         },
         {
@@ -714,8 +715,8 @@
             "source": "原版书 EOC Q7",
             "status": "Needs Review",
             "analysis": "混淆了导致需求曲线平移的因素与导致市场无法出清（过剩需求/短缺）的价格机制原因。",
-            "logic": "当市场价格低于均衡价格 (P < P*) 时，需求量大于供给量 (Qd > Qs)，表现为供不应求 (Excess Demand)。要消除短缺，价格必须上涨至均衡水平。",
-            "note": "微观经济学基础：区分 Demand shift 与 Excess demand",
+            "logic": "Price Mechanism under Imbalance:\nWhen Price < Equilibrium Price (P < P*) -> Excess Demand (Shortage) -> Price rises to P*",
+            "note": "📘 考点概念表述 (Demand Shift vs Excess Demand):\n1. 需求平移 (Shift): 由非价格因素（收入、偏好、替代品价格）引起；\n2. 过剩需求 (Excess Demand): 当市场现行价格低于均衡价格 (P < P*) 时，需求量超过供给量 (Qd > Qs)，市场出现短缺 (Shortage)，价格上涨推动市场重回均衡。",
             "createdDate": "2026-10-29"
         },
         {
@@ -726,8 +727,8 @@
             "source": "官网 Topic Test Q12",
             "status": "Needs Review",
             "analysis": "混淆了 IFRS 下开发阶段资本化的 6 项条件，误以为与 US GAAP 一样全部费用化。",
-            "logic": "US GAAP：研发支出全部费用化（软件除外）。\nIFRS：研究阶段费用化；开发阶段符合 6 项条件必须资本化。",
-            "note": "高频易错点！重点区分研究与开发阶段",
+            "logic": "R&D Accounting Comparison:\n• US GAAP: Research & Development expenses are expensed as incurred (except software).\n• IFRS: Research = Expensed; Development = Capitalized if 6 criteria met.",
+            "note": "📘 考点概念表述 (R&D Accounting Treatment):\n1. US GAAP: 研发费用 (R&D) 一律在发生时费用化 (Expensed as incurred)，软件开发除外；\n2. IFRS: 区分研究 (Research) 与开发 (Development) 阶段。研究支出一律费用化；开发阶段支出若同时满足 6 项技术与商业可行性条件，【必须资本化 (Capitalized)】进入无形资产。",
             "createdDate": "2026-08-28"
         },
         {
@@ -738,8 +739,8 @@
             "source": "Mock 1 Afternoon Q18",
             "status": "Needs Review",
             "analysis": "忽略了题目中 Callable Bond 的条件，错误使用了 ModDur 计算公式。",
-            "logic": "含权债券（Callable/Putable）现金流不确定，不能用 Macaulay/Modified Duration，必须使用 Effective Duration。",
-            "note": "含权债必考 Effective Duration",
+            "logic": "Duration Applicability for Embedded Options:\nCallable/Putable Bonds -> Cash flows change with yields -> Must use Effective Duration!",
+            "note": "📘 考点概念表述 (Effective Duration for Callable Bonds):\n含权债券（Callable 或 Putable Bonds）因为嵌入了买方/卖方期权，当利率变动时未来的现金流方向会发生改变。因此，不能使用假设现金流不变的 Macaulay 或 Modified Duration，必须使用通过实际定价模型算得的【Effective Duration (有效久期)】。",
             "createdDate": "2026-08-29"
         },
         {
@@ -750,8 +751,8 @@
             "source": "原版书 EOC Q5",
             "status": "Mastered",
             "analysis": "在计算 WACC 时忘记将 Rd 乘以 (1 - t)，直接使用了税前债务成本。",
-            "logic": "WACC = (Wd * Rd * (1-t)) + (Wps * Rps) + (We * Re)。利息具有抵税效应，必须用税后债务成本！",
-            "note": "记住 Rd 一定要乘以 (1-t)",
+            "logic": "WACC Formula:\nWACC = (Wd * Rd * (1 - t)) + (Wps * Rps) + (We * Re)",
+            "note": "📘 考点概念表述 (WACC After-Tax Cost of Debt):\n加权平均资本成本 (WACC) 计算中，由于债券债务利息具有税前抵税效应 (Interest Tax Shield)，因此债务成本必须采用【税后债务成本 Rd * (1 - t)】；而优先股 (Rps) 与普通股 (Re) 股息在税后支付，不具备抵税效应，直接使用税后成本。",
             "createdDate": "2026-08-25"
         },
         {
@@ -762,8 +763,8 @@
             "source": "原版书 EOC Q22",
             "status": "Needs Review",
             "analysis": "误将 p-value 小于 alpha 记为接受原假设。",
-            "logic": "口诀：p 值小，拒绝原假设 (p <= alpha -> Reject H0)。",
-            "note": "记忆口诀：p值小，拒绝原假设",
+            "logic": "Hypothesis Testing Decision Rule:\n• If p-value <= alpha -> Reject H0 (Statistically Significant)\n• If p-value > alpha -> Fail to reject H0",
+            "note": "📘 考点概念表述 (p-value Decision Rule):\np-value 代表当原假设 (H0) 为真时，观察到当前样本或更极端样本的概率。决策法则：当 p-value 小于或等于显著性水平 alpha (p-value <= alpha) 时，说明小概率事件发生，应【拒绝原假设 (Reject H0)】；反之则无法拒绝原假设 (Fail to reject H0)。记忆口诀：“p值小，拒绝原假设”。",
             "createdDate": "2026-08-30"
         }
     ];
@@ -810,8 +811,8 @@
         const errorType = getField(/•\s*(?:错因类型|归因|错因)[:：]\s*(.+)/i) || '概念辨析';
         const source = getField(/•\s*(?:来源|出处)[:：]\s*(.+)/i) || '日常练习';
         const analysis = getField(/•\s*(?:错因剖析|诊断|错因分析)[:：]\s*(.+)/i) || '尚无明确错因记录';
-        const logic = getField(/•\s*(?:核心逻辑|考点总结|逻辑解题|概念表述)[:：]\s*(.+)/i) || rawText;
-        const note = getField(/•\s*(?:Note|笔记|备忘)[:：]\s*(.+)/i) || '点击可直接添加笔记...';
+        const logic = getField(/•\s*(?:核心逻辑|考点总结|逻辑解题|题目原题)[:：]\s*(.+)/i) || rawText;
+        const note = getField(/•\s*(?:Note|笔记|备忘|考点概念表述)[:：]\s*(.+)/i) || '点击可直接编辑考点概念表述...';
 
         const newQ = {
             id: id,
@@ -1026,7 +1027,7 @@
                     <button class="action-btn delete" onclick="deleteQuestion('${q.id}')">删除</button>
                 </td>
                 <td>
-                    <div class="note-cell" contenteditable="true" onblur="updateNoteInline('${q.id}', this.innerText)">${q.note || '点击添加笔记...'}</div>
+                    <div class="note-cell" contenteditable="true" onblur="updateNoteInline('${q.id}', this.innerText)">${q.note || '点击添加考点概念表述...'}</div>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -1046,7 +1047,7 @@
             status: document.getElementById('q-status').value,
             analysis: document.getElementById('q-analysis').value,
             logic: document.getElementById('q-logic').value,
-            note: document.getElementById('q-note').value || '点击添加笔记...',
+            note: document.getElementById('q-note').value || '点击添加考点概念表述...',
             createdDate: new Date().toISOString().split('T')[0]
         };
 
